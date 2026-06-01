@@ -1,14 +1,12 @@
 import { portfolio } from "@/data/portfolio";
 
 const skills = [
-  "Premiere Pro",
-  "After Effects",
-  "DaVinci Resolve",
-  "CapCut / Mobile Edit",
-  "Motion Graphics",
-  "Color Grading",
-  "Reels / Shorts",
-  "Sound Design",
+  "Adobe Premiere Pro",
+  "Adobe After Effects",
+  "Adobe Photoshop",
+  "Adobe Illustrator",
+  "CapCut",
+  "AI Generate",
 ];
 
 export default function About() {
