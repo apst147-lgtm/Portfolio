@@ -12,21 +12,22 @@ interface PlaylistConfig {
 }
 
 const PLAYLISTS: PlaylistConfig[] = [
-  { id: "PLUuz1sbgdfB9BFSNoxCgPfVX9QaZ2edkU", category: "คลินิก",      maxResults: 6 },
-  { id: "PLUuz1sbgdfB_8KWV-6erY2jdJJ_qaDEkp", category: "คลินิก",      maxResults: 4 },
-  { id: "PLUuz1sbgdfB81XIJ8G8UCoJkjKF9GV8vt", category: "อสังหาฯ",     maxResults: 6 },
-  { id: "PLUuz1sbgdfB9H12QICPQssgA4Q1uTi3Tv", category: "อสังหาฯ",     maxResults: 4 },
-  { id: "PLUuz1sbgdfB-pvJfkPdeL_FiAWpfpfyhZ", category: "งานแต่ง",     maxResults: 6 },
-  { id: "PLUuz1sbgdfB8hLz4Wm1t8DsWhZn3i-W6q", category: "คลิปสวย",    maxResults: 6 },
-  { id: "PLUuz1sbgdfB8LVnPxkXzWk__bxN_INp0y", category: "ให้ความรู้",  maxResults: 5 },
-  { id: "PLUuz1sbgdfB98ZlqAZbkrJRScn6j6iitB", category: "ADS Motion",  maxResults: 6 },
+  // Personal Brand ขึ้นก่อน เพื่อไม่ให้คลิปถูกนับเป็น category อื่น
+  { id: "PLUuz1sbgdfB8hLz4Wm1t8DsWhZn3i-W6q", category: "Personal Brand", maxResults: 6 },
+  { id: "PLUuz1sbgdfB9BFSNoxCgPfVX9QaZ2edkU", category: "คลินิก",         maxResults: 6 },
+  { id: "PLUuz1sbgdfB_8KWV-6erY2jdJJ_qaDEkp", category: "คลินิก",         maxResults: 4 },
+  { id: "PLUuz1sbgdfB81XIJ8G8UCoJkjKF9GV8vt", category: "อสังหาฯ",        maxResults: 6 },
+  { id: "PLUuz1sbgdfB9H12QICPQssgA4Q1uTi3Tv", category: "อสังหาฯ",        maxResults: 4 },
+  { id: "PLUuz1sbgdfB-pvJfkPdeL_FiAWpfpfyhZ", category: "งานแต่ง",        maxResults: 6 },
+  { id: "PLUuz1sbgdfB8LVnPxkXzWk__bxN_INp0y", category: "ให้ความรู้",     maxResults: 5 },
+  { id: "PLUuz1sbgdfB98ZlqAZbkrJRScn6j6iitB", category: "ADS Motion",     maxResults: 6 },
 ];
 
 export const CATEGORY_ORDER = [
+  "Personal Brand",
   "คลินิก",
   "อสังหาฯ",
   "งานแต่ง",
-  "คลิปสวย",
   "ให้ความรู้",
   "ADS Motion",
 ];
