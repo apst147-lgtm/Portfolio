@@ -66,14 +66,17 @@ export async function fetchAllPortfolioVideos(): Promise<YTVideo[]> {
     })
   );
 
-  const seen = new Set<string>();
+  const seenId = new Set<string>();
+  const seenTitle = new Set<string>();
   const videos: YTVideo[] = [];
 
   for (const result of results) {
     if (result.status === "fulfilled") {
       for (const v of result.value) {
-        if (!seen.has(v.id)) {
-          seen.add(v.id);
+        const titleKey = `${v.category}::${v.title.trim().toLowerCase()}`;
+        if (!seenId.has(v.id) && !seenTitle.has(titleKey)) {
+          seenId.add(v.id);
+          seenTitle.add(titleKey);
           videos.push(v);
         }
       }
