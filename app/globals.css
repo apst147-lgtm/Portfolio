@@ -16,3 +16,47 @@ body {
   background: #ffffff;
   color: #171717;
 }
+
+/* Hero gradient animation */
+@keyframes gradientDrift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 40%, #f0f0f0 70%, #fafafa 100%);
+  background-size: 300% 300%;
+  animation: gradientDrift 8s ease infinite;
+}
+
+/* Shimmer on cards */
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Line reveal animation */
+@keyframes lineReveal {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+.line-reveal {
+  animation: lineReveal 0.8s ease-out forwards;
+}
+
+/* Floating animation for hero accent */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Typewriter cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}

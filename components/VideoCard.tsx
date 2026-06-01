@@ -7,6 +7,7 @@ import { YTVideo } from "@/lib/youtube";
 interface Props {
   video: YTVideo;
   onPlay: (video: YTVideo) => void;
+  animDelay?: number;
 }
 
 export default function VideoCard({ video, onPlay }: Props) {
@@ -19,22 +20,25 @@ export default function VideoCard({ video, onPlay }: Props) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      {/* Thumbnail container */}
       <div
-        className="relative w-full overflow-hidden bg-neutral-100"
+        className="relative w-full overflow-hidden bg-neutral-100 shadow-sm group-hover:shadow-xl transition-shadow duration-500"
         style={{ paddingBottom: "56.25%" }}
       >
-        {/* Static thumbnail */}
-        <Image
-          src={video.thumbnailUrl}
-          alt={video.title}
-          fill
-          className={`object-cover transition-opacity duration-300 ${
-            hovered ? "opacity-0" : "opacity-100"
-          }`}
-          unoptimized
-        />
+        {/* Thumbnail image */}
+        {video.thumbnailUrl && (
+          <Image
+            src={video.thumbnailUrl}
+            alt={video.title}
+            fill
+            className={`object-cover transition-all duration-700 ${
+              hovered ? "opacity-0 scale-110" : "opacity-100 scale-100 group-hover:scale-105"
+            }`}
+            unoptimized
+          />
+        )}
 
-        {/* Hover: YouTube autoplay preview (muted, no controls) */}
+        {/* YouTube hover preview */}
         {hovered && (
           <iframe
             className="absolute inset-0 w-full h-full pointer-events-none"
@@ -44,34 +48,34 @@ export default function VideoCard({ video, onPlay }: Props) {
           />
         )}
 
-        {/* Play button — show when not hovered */}
-        <div
-          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-200 ${
-            hovered ? "opacity-0" : "opacity-0 group-hover:opacity-100"
-          }`}
-        >
-          <div className="w-12 h-12 rounded-full bg-white/80 flex items-center justify-center">
-            <svg className="w-5 h-5 text-neutral-900 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+
+        {/* Play button */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100 z-10">
+          <div className="w-14 h-14 rounded-full border-2 border-white/90 bg-white/20 backdrop-blur-sm flex items-center justify-center">
+            <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
           </div>
         </div>
 
         {/* Category badge */}
-        <span className="absolute top-3 left-3 text-xs tracking-wide bg-white/90 text-neutral-600 px-2.5 py-1 z-10">
+        <span className="absolute top-3 left-3 z-20 text-xs bg-white/90 backdrop-blur-sm text-neutral-700 px-2.5 py-1 tracking-wide">
           {video.category}
         </span>
 
-        {/* Click to open full video hint on hover */}
-        {hovered && (
-          <div className="absolute bottom-3 right-3 z-10 bg-black/60 text-white text-xs px-2 py-1 rounded">
-            คลิกเพื่อดูเต็ม
-          </div>
-        )}
+        {/* Bottom title overlay on hover */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+          <p className="text-white text-xs font-medium line-clamp-1 drop-shadow">
+            {video.title}
+          </p>
+        </div>
       </div>
 
-      <div className="pt-3">
-        <h3 className="text-sm font-medium text-neutral-800 group-hover:text-neutral-500 transition-colors line-clamp-1 leading-snug">
+      {/* Title below */}
+      <div className="pt-3 group-hover:opacity-60 transition-opacity duration-300">
+        <h3 className="text-sm text-neutral-800 line-clamp-1 leading-snug">
           {video.title}
         </h3>
       </div>
