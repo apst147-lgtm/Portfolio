@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 import { YTVideo } from "@/lib/youtube";
 
 interface Props {
@@ -20,7 +21,6 @@ export default function VideoCard({ video, onPlay, featured = false }: Props) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Thumbnail */}
       <div
         className="relative w-full overflow-hidden bg-neutral-100"
         style={{ paddingBottom: featured ? "56.25%" : "62%" }}
@@ -31,13 +31,13 @@ export default function VideoCard({ video, onPlay, featured = false }: Props) {
             alt={video.title}
             fill
             className={`object-cover transition-all duration-700 ${
-              hovered ? "opacity-0 scale-110" : "opacity-100 scale-100 group-hover:scale-[1.04]"
+              hovered ? "opacity-0 scale-110" : "scale-100 group-hover:scale-[1.04]"
             }`}
             unoptimized
           />
         )}
 
-        {/* YouTube preview */}
+        {/* YouTube preview on hover */}
         {hovered && (
           <iframe
             className="absolute inset-0 w-full h-full pointer-events-none"
@@ -48,30 +48,33 @@ export default function VideoCard({ video, onPlay, featured = false }: Props) {
         )}
 
         {/* Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Play */}
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <div className={`w-12 h-12 rounded-full border border-white/70 bg-black/20 backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
-            hovered ? "opacity-100 scale-100" : "opacity-0 scale-75"
-          }`}>
-            <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+        {/* Play button */}
+        <div className={`absolute inset-0 z-10 flex items-center justify-center transition-all duration-300 ${hovered ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}>
+          <div className="w-14 h-14 rounded-full border border-white/60 bg-black/30 backdrop-blur-sm flex items-center justify-center">
+            <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
           </div>
         </div>
 
-        {/* Bottom overlay with title */}
-        <div className={`absolute bottom-0 left-0 right-0 z-10 px-4 py-4 transition-all duration-300 ${
-          hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-        }`}>
+        {/* Category badge */}
+        <div className="absolute top-3 left-3 z-20">
+          <Badge variant="secondary" className="text-[10px] tracking-wider uppercase rounded-none bg-white/90 text-neutral-700 hover:bg-white/90">
+            {video.category}
+          </Badge>
+        </div>
+
+        {/* Bottom title overlay */}
+        <div className={`absolute bottom-0 left-0 right-0 z-10 px-4 py-4 transition-all duration-300 ${hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}>
           <p className="text-white text-sm font-light line-clamp-1">{video.title}</p>
         </div>
       </div>
 
       {/* Title below */}
-      <div className="pt-3 pb-1">
-        <p className="text-xs text-neutral-900 line-clamp-1 group-hover:text-neutral-500 transition-colors duration-300 font-light">
+      <div className="pt-3">
+        <p className="text-xs text-neutral-700 line-clamp-1 group-hover:text-neutral-400 transition-colors duration-300 font-light">
           {video.title}
         </p>
       </div>
