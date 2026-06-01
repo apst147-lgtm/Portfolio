@@ -6,76 +6,92 @@ import VideoCard from "./VideoCard";
 import VideoModal from "./VideoModal";
 import AnimateIn from "./ui/AnimateIn";
 
-interface Props {
-  videos: YTVideo[];
-}
+interface Props { videos: YTVideo[] }
 
-const PREVIEW_COUNT = 6;
+const PREVIEW = 6;
 
 export default function WorkSection({ videos }: Props) {
-  const [playing, setPlaying] = useState<YTVideo | null>(null);
+  const [playing, setPlaying]   = useState<YTVideo | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
-  const availableCategories = CATEGORY_ORDER.filter((c) =>
-    videos.some((v) => v.category === c)
-  );
-
-  const toggleExpand = (cat: string) =>
-    setExpanded((prev) => ({ ...prev, [cat]: !prev[cat] }));
+  const cats = CATEGORY_ORDER.filter((c) => videos.some((v) => v.category === c));
 
   return (
     <section id="work" className="py-28 bg-white">
       <div className="max-w-6xl mx-auto px-6">
 
         <AnimateIn>
-          <p className="text-xs tracking-[0.3em] uppercase text-neutral-400 mb-2">Selected Work</p>
-          <h2 className="text-4xl md:text-5xl font-light text-neutral-900 mb-20">ผลงาน</h2>
+          <div className="mb-20">
+            <p className="text-[10px] tracking-[0.35em] uppercase text-neutral-400 mb-3">Selected Work</p>
+            <h2 className="text-5xl md:text-6xl font-extralight text-neutral-900 tracking-tight">ผลงาน</h2>
+          </div>
         </AnimateIn>
 
-        <div className="flex flex-col gap-24">
-          {availableCategories.map((category, catIdx) => {
-            const catVideos = videos.filter((v) => v.category === category);
-            const isExpanded = expanded[category];
-            const shown = isExpanded ? catVideos : catVideos.slice(0, PREVIEW_COUNT);
-            const hasMore = catVideos.length > PREVIEW_COUNT;
+        <div className="flex flex-col gap-28">
+          {cats.map((category, ci) => {
+            const catVids   = videos.filter((v) => v.category === category);
+            const isOpen    = expanded[category];
+            const shown     = isOpen ? catVids : catVids.slice(0, PREVIEW);
+            const hasMore   = catVids.length > PREVIEW;
+            const [featured, ...rest] = shown;
 
             return (
               <div key={category}>
-                {/* Category header */}
-                <AnimateIn delay={catIdx * 50}>
-                  <div className="flex items-baseline justify-between mb-8">
-                    <div>
-                      <h3 className="text-2xl font-light text-neutral-900">{category}</h3>
-                      <div className="mt-2 h-px bg-neutral-900 line-reveal w-12" />
+                {/* Header */}
+                <AnimateIn delay={ci * 40}>
+                  <div className="flex items-end justify-between mb-8 pb-5 border-b border-neutral-100">
+                    <div className="flex items-end gap-5">
+                      <h3 className="text-3xl font-extralight text-neutral-900">{category}</h3>
+                      <span className="text-xs text-neutral-400 tracking-widest uppercase mb-1">
+                        {catVids.length} clips
+                      </span>
                     </div>
-                    <span className="text-xs text-neutral-400 tracking-widest uppercase">
-                      {catVideos.length} clips
-                    </span>
+                    <div className="h-px bg-neutral-200 flex-1 mx-8 mb-1.5" />
                   </div>
                 </AnimateIn>
 
-                {/* Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
-                  {shown.map((video, i) => (
-                    <AnimateIn key={video.id} delay={i * 60}>
-                      <VideoCard video={video} onPlay={setPlaying} />
+                {/* Featured first + rest grid */}
+                {featured && (
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
+                    {/* Featured — spans 2 cols */}
+                    <AnimateIn className="lg:col-span-2" delay={80}>
+                      <VideoCard video={featured} onPlay={setPlaying} featured />
                     </AnimateIn>
-                  ))}
-                </div>
+
+                    {/* Side stack — up to 2 */}
+                    <div className="flex flex-col gap-5">
+                      {rest.slice(0, 2).map((v, i) => (
+                        <AnimateIn key={v.id} delay={120 + i * 60}>
+                          <VideoCard video={v} onPlay={setPlaying} />
+                        </AnimateIn>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Remaining cards */}
+                {rest.length > 2 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {rest.slice(2).map((v, i) => (
+                      <AnimateIn key={v.id} delay={i * 50}>
+                        <VideoCard video={v} onPlay={setPlaying} />
+                      </AnimateIn>
+                    ))}
+                  </div>
+                )}
 
                 {/* Expand */}
                 {hasMore && (
-                  <AnimateIn delay={200}>
-                    <div className="mt-10 text-center">
+                  <AnimateIn delay={100}>
+                    <div className="mt-10 flex justify-center">
                       <button
-                        onClick={() => toggleExpand(category)}
-                        className="group inline-flex items-center gap-3 text-xs tracking-widest uppercase border border-neutral-200 text-neutral-500 px-10 py-3 hover:border-neutral-900 hover:text-neutral-900 transition-all duration-300"
+                        onClick={() => setExpanded(p => ({ ...p, [category]: !p[category] }))}
+                        className="group inline-flex items-center gap-3 text-[11px] tracking-[0.25em] uppercase text-neutral-400 border border-neutral-200 px-10 py-3.5 hover:border-neutral-900 hover:text-neutral-900 transition-all duration-300"
                       >
-                        {isExpanded ? (
-                          <>ย่อ<span className="group-hover:-translate-y-0.5 transition-transform inline-block">↑</span></>
-                        ) : (
-                          <>ดูทั้งหมด {catVideos.length} clips<span className="group-hover:translate-y-0.5 transition-transform inline-block">↓</span></>
-                        )}
+                        {isOpen
+                          ? "ย่อ"
+                          : `ดูทั้งหมด ${catVids.length} clips`}
+                        <span className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>↓</span>
                       </button>
                     </div>
                   </AnimateIn>
@@ -87,11 +103,7 @@ export default function WorkSection({ videos }: Props) {
       </div>
 
       {playing && (
-        <VideoModal
-          videoId={playing.id}
-          title={playing.title}
-          onClose={() => setPlaying(null)}
-        />
+        <VideoModal videoId={playing.id} title={playing.title} onClose={() => setPlaying(null)} />
       )}
     </section>
   );

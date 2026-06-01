@@ -8,55 +8,59 @@
   --font-sans: var(--font-inter);
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background: #ffffff;
-  color: #171717;
+  color: #111111;
 }
 
-/* Hero gradient animation */
-@keyframes gradientDrift {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
+/* ── Marquee ─────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+.animate-marquee:hover { animation-play-state: paused; }
+
+/* ── Scroll fade-up ──────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.7s ease-out forwards;
 }
 
-.hero-gradient {
-  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 40%, #f0f0f0 70%, #fafafa 100%);
-  background-size: 300% 300%;
-  animation: gradientDrift 8s ease infinite;
+/* ── Hero noise overlay ─────────────────────── */
+.hero-noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
 }
 
-/* Shimmer on cards */
-@keyframes shimmer {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* Line reveal animation */
-@keyframes lineReveal {
-  from { width: 0; }
-  to   { width: 100%; }
-}
-
-.line-reveal {
-  animation: lineReveal 0.8s ease-out forwards;
-}
-
-/* Floating animation for hero accent */
+/* ── Float blob ─────────────────────────────── */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0) scale(1);    }
+  50%       { transform: translateY(-16px) scale(1.04); }
 }
+.animate-float { animation: float 7s ease-in-out infinite; }
+.animate-float-slow { animation: float 10s ease-in-out infinite reverse; }
 
-.animate-float {
-  animation: float 4s ease-in-out infinite;
+/* ── Line reveal ────────────────────────────── */
+@keyframes lineGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
-
-/* Typewriter cursor blink */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+.line-grow {
+  transform-origin: left;
+  animation: lineGrow 0.6s ease-out 0.2s forwards;
+  transform: scaleX(0);
 }
